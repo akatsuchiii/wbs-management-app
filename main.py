@@ -1,7 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request, Form
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
 
-app = FastAPI()
+app = FastAPI(title="Wibby")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# HTMLテンプレートの保存場所を指定
+templates = Jinja2Templates(directory="templates")
 
 #プロジェクト登録時に受け取るデータの形
 class ProjectCreate(BaseModel):
@@ -22,10 +29,12 @@ projects = [
     },
 ]
 
+# ログインユーザー情報
+loginUser = {
+    "username":"admin",
+    "password": "admin",
+}
 
-@app.get("/projects")
-def get_projects():
-    return projects
 
 @app.post("/projects")
 def create_project(project: ProjectCreate):
@@ -40,7 +49,49 @@ def create_project(project: ProjectCreate):
 
     return new_project
 
+@app.get("/projects/{project_id}")
+def get_project(project_id: int):
+
+    for project in projects:
+        if project_id == project["id"]:
+            return project
+
+    raise HTTPException(
+        status_code=404,
+        detail="Project not found"
+    )
+    
+# ログイン画面を表示
+@app.get("/login")
+def login_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html"
+    )
+    
+@app.post("/login")
+def login(username: str = Form(...), password: str = Form(...)):
+    regUserNm = loginUser["username"]
+    regUserPw = loginUser["password"]
+    
+    if username == regUserNm and password == regUserPw:
+        return RedirectResponse(
+            url="/home",
+            status_code=303
+        )
+    else:
+        raise HTTPException(
+            status_code=404,
+            detail="Invalid username or password"
+        )
+
+@app.get("/home")
+def dashboard(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html"
+    )
 
 @app.get("/")
 def read_root():
-    return{"message":"WBS管理アプリ"}
+    return {"message": "Welcome to Wibby!"}
