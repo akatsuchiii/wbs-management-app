@@ -1,0 +1,23 @@
+header {
+    background-color: #253858;
+    color: white;
+    padding: 20px;
+    display:flex;
+    justify-content: space-between;
+}
+
+body{
+    margin: 0;
+}
+
+main{
+    padding: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+nav a:hover {
+    color: #90caf9;
+}
