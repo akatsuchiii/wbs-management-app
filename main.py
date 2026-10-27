@@ -10,7 +10,9 @@ from pwdlib import PasswordHash
 from starlette.middleware.sessions import SessionMiddleware
 
 from routers.projects import router as projects_router
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # FastAPIアプリの作成
 app = FastAPI(title="Wibby")
@@ -70,7 +72,9 @@ def login(
                 )
                 user = cur.fetchone()
 
-    except psycopg.Error:
+    except psycopg.Error as e:
+        print(f"DB接続エラー: {type(e).__name__}: {e}")
+
         raise HTTPException(
             status_code=503,
             detail="Database connection error",

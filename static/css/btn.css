@@ -1,0 +1,25 @@
+/* 共通ボタン */
+.btn {
+    display: inline-flex;             /* 要素を横並びにし、Flexboxで配置する */
+    align-items: center;              /* ボタン内の要素を上下中央に揃える */
+    justify-content: center;          /* ボタン内の要素を左右中央に揃える */
+    gap: 6px;                         /* ボタン内の要素同士の間隔を6pxにする */
+    padding: 10px 16px;               /* 内側の余白：上下10px、左右16px */
+    border: none;                     /* ボタンの枠線をなくす */
+    border-radius: 6px;               /* ボタンの四隅を6px丸くする */
+    font-size: 14px;                  /* 文字サイズを14pxにする */
+    font-weight: 500;                 /* 文字の太さを500（中程度）にする */
+    cursor: pointer;                  /* マウスを乗せたときに指マークにする */
+    transition: background-color 0.2s; /* 背景色の変化を0.2秒かけて滑らかにする */
+}
+
+/* メイン操作用ボタン */
+.btn-primary {
+    background-color: #3267a8;       /* ボタンの背景色を青色にする */
+    color: white;                     /* ボタン内の文字色を白色にする */
+}
+
+/* メイン操作用ボタン：マウスを乗せたとき */
+.btn-primary:hover {
+    background-color: #254f82;       /* マウスを乗せたときに背景色を濃い青色にする */
+}

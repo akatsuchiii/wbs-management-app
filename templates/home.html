@@ -1,24 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Wibby | ホーム</title>
-    <link rel="stylesheet" href="/static/home.css">
-</head>
-
-<body>
-    <header>
-        <div>Wibby</div>
-        <nav>
-            <a href="/home">ホーム</a>
-        </nav>
-        
-    </header>
-    <main>
-        <h1>ダッシュボード</h1>
-        <p>xxxxxxx</p>
-    </main>
-</body>
-
-</html>
+{% block content %}
+    <h1>ダッシュボード</h1>
+    <p>xxxxxxx</p>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>プロジェクト一覧</h1>
+    <button type="button" id="create-Btn" class="btn btn-primary">新規作成</button>
+    <dialog id="create-dialog">プロジェクト新規作成</dialog>
+    <div id="projects-table"></div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/projects.js"></script>
+{% endblock %}
