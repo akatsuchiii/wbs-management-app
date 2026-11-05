@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python デバッガー: FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "main:app"
+            ],
+            "jinja": true,
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "name": "Wibby JavaScript Debug",
+            "type": "pwa-chrome",
+            "request": "launch",
+            "url": "http://127.0.0.1:8000/projects",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}

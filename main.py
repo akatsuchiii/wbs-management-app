@@ -109,3 +109,13 @@ def dashboard(request: Request):
         request=request,
         name="home.html",
     )
+
+
+# ログアウト処理
+@app.post("/logout")
+def logout(request: Request):
+
+    # セッション情報を削除
+    request.session.clear()
+
+    return {"message": "Logged out successfully"}

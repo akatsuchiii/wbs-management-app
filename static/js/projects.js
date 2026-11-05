@@ -18,7 +18,64 @@ async function loadProjectColumns() {
         const table = new Tabulator("#projects-table", {
             layout: "fitData",
             ajaxURL: "/api/projects",
-            columns: tabulatorColumns
+            columns: tabulatorColumns,
+            // 複数行選択を有効化
+            selectableRows: true,
+            selectableRowsRangeMode: "click"
+        });
+        // 行選択が変更された際の処理
+        table.on("rowSelectionChanged", function (data, rows) {
+
+            // 選択したプロジェクトのIDを取得
+            const projectIds = data.map(project => project.id);
+
+            console.log("選択中のプロジェクトID:", projectIds);
+        });
+
+        // 削除ボタン押下処理
+        // 削除ボタンの要素取得
+        const deleteBrnElement = document.getElementById("delete-btn");
+
+        deleteBrnElement.addEventListener("click", async () => {
+            const selectedTable = table.getSelectedData();
+
+            // 0件の場合
+            if (selectedTable.length === 0) {
+                alert("データが選択されていません。");
+                return;
+            }
+
+            const result = confirm(`${selectedTable.length}行選択されています。削除しますか？`);
+            if (!result) {
+                return;
+            }
+
+
+            // 選択したプロジェクトのIDを取得
+            const projectIds = selectedTable.map(project => project.id);
+
+            try{
+                // python側へ
+                const response = await fetch("/api/projects/bulk", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "projectId": projectIds
+                    })
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+                    console.log(json.project_ids);
+                }
+                else{
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+            } catch(error) {
+                console.error(error);
+            }
         });
 
     } catch (error) {
