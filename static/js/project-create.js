@@ -43,10 +43,16 @@ function registProject(event) {
         .then(async (response) => {
             console.log("HTTPステータス:", response.status);
 
-            const result = await response.json();
+            const json = await response.json();
+
+            if (response.status == 400) {
+                alert(json.detail);
+                return;
+            }
 
             if (!response.ok) {
                 // 登録失敗
+                alert("プロジェクト登録に失敗しました。");
                 return;
             }
 

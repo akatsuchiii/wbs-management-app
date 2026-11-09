@@ -7,10 +7,11 @@ async function loadProjectColumns() {
         }
 
         const columns = await response.json();
-
+        let editingProjectId = null;
         const tabulatorColumns = columns.map(column => ({
             title: column,
-            field: column
+            field: column,
+            editor: column == "name" ? "input" : false
         }));
 
         console.log(tabulatorColumns);
@@ -68,7 +69,8 @@ async function loadProjectColumns() {
 
                 if (response.ok) {
                     const json = await response.json();
-                    console.log(json.project_ids);
+                    console.log(json.deleted_ids);
+                    await table.replaceData();
                 }
                 else{
                     throw new Error(`HTTP Error: ${response.status}`);

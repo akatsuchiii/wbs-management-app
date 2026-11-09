@@ -95,6 +95,12 @@ def create_project(project: ProjectCreate, request: Request):
             detail="Not authenticated"
         )
 
+    if project.end_date is not None and project.str_date is not None and project.str_date > project.end_date:
+        raise HTTPException(
+            status_code=400,
+            detail="開始日が終了日より後に設定されています。"
+        )
+
     # SQLファイルの読み込み
     sql_path = Path(__file__).resolve().parent.parent / "sql" / "regist_project.sql"
     sql = sql_path.read_text(encoding="utf-8")
@@ -121,50 +127,6 @@ def create_project(project: ProjectCreate, request: Request):
         "id": project_id,
         "message": "Project created successfully"
     }
-
-# 1件のみ削除関数
-# @router.delete("/api/projects/{project_id}")
-# def delete_project(project_id: int, request: Request):
-
-#     # ログインユーザーを取得
-#     user_id = request.session.get("user_id")
-
-#     if user_id is None:
-#         raise HTTPException(
-#             status_code=401,
-#             detail="Not authenticated"
-#         )
-
-#     # SQLファイルを読み込み
-#     sql_path = (
-#         Path(__file__).resolve().parent.parent
-#         / "sql"
-#         / "delete_project.sql"
-#     )
-#     sql = sql_path.read_text(encoding="utf-8")
-
-#     # PostgreSQLから削除
-#     with psycopg.connect(connect_timeout=10) as conn:
-#         with conn.cursor() as cur:
-#             cur.execute(sql, {
-#                 "project_id": project_id,
-#                 "user_id": user_id
-#             })
-
-#             deleted_project = cur.fetchone()
-
-#     # 削除対象が存在しない場合
-#     if deleted_project is None:
-#         raise HTTPException(
-#             status_code=404,
-#             detail="Project not found"
-#         )
-
-#     return {
-#         "id": deleted_project[0],
-#         "message": "Project deleted successfully"
-#     }
-
 
 # 複数選択にも対応した削除関数
 @router.delete("/api/projects/bulk")
